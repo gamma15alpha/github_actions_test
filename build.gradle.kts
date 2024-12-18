@@ -72,7 +72,6 @@ kotlin {
 
 detekt {
 	toolVersion = "1.23.1"
-	config = files("detekt-config.yml")
 	buildUponDefaultConfig = true
 	allRules = false
 }
