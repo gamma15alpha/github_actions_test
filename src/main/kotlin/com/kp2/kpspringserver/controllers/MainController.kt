@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping
 class MainController {
 
     @GetMapping("/index")
-    fun homePage(model: Model): String {
+    fun homePage(): String {
         return "index"
     }
 }

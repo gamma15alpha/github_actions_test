@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.transaction.annotation.Transactional
 
-interface UserRoleService {
+interface UserRoleReadService {
     fun search(name: String?, status: Int?, isDeleted: Boolean?): List<UserRole>
     fun filterAndSort(status: Int, isDeleted: Boolean): List<UserRole>
     fun getAll(isDeleted: Boolean): List<UserRole>
@@ -13,6 +13,9 @@ interface UserRoleService {
     fun findAllActive(): List<UserRole>
     fun getById(id: Long): UserRole?
     fun findByName(name: String): UserRole?
+}
+
+interface UserRoleWriteService {
     fun save(userRole: UserRole): UserRole
     fun update(id: Long, userRole: UserRole): UserRole?
     @Transactional
@@ -22,3 +25,5 @@ interface UserRoleService {
     @Transactional
     fun delete(ids: List<Long>)
 }
+
+interface UserRoleService : UserRoleReadService, UserRoleWriteService

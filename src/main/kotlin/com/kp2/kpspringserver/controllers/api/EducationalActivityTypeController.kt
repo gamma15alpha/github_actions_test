@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/educational-activity-types")
-class EducationalActivityTypeController(@Autowired private val educationalActivityTypeService: EducationalActivityTypeService) {
+class EducationalActivityTypeController(
+    @Autowired private val educationalActivityTypeService: EducationalActivityTypeService
+) {
 
     // Поиск типов образовательной деятельности по имени и статусу isDeleted
     @GetMapping("/search")
@@ -48,14 +50,18 @@ class EducationalActivityTypeController(@Autowired private val educationalActivi
 
     // Создать новый тип образовательной деятельности
     @PostMapping
-    fun save(@RequestBody educationalActivityType: EducationalActivityType): ResponseEntity<EducationalActivityType> {
+    fun save(
+        @RequestBody educationalActivityType: EducationalActivityType
+    ): ResponseEntity<EducationalActivityType> {
         val savedType = educationalActivityTypeService.save(educationalActivityType)
         return ResponseEntity.status(HttpStatus.CREATED).body(savedType)
     }
 
     // Обновить тип образовательной деятельности по ID
     @PutMapping("/{id}")
-    fun update(@RequestBody educationalActivityType: EducationalActivityType, @PathVariable id: Long): ResponseEntity<EducationalActivityType> {
+    fun update(
+        @RequestBody educationalActivityType: EducationalActivityType, @PathVariable id: Long
+    ): ResponseEntity<EducationalActivityType> {
         val updatedType = educationalActivityTypeService.update(educationalActivityType, id)
         return if (updatedType != null) {
             ResponseEntity.ok(updatedType)

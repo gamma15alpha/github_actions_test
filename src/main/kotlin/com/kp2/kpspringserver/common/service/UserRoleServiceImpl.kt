@@ -2,6 +2,7 @@ package com.kp2.kpspringserver.common.service
 
 import com.kp2.kpspringserver.common.model.UserRole
 import com.kp2.kpspringserver.common.repository.UserRoleRepository
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserRoleServiceImpl(private val userRoleRepository: UserRoleRepository):UserRoleService {
+class UserRoleReadServiceImpl(private val userRoleRepository: UserRoleRepository) : UserRoleReadService {
     override fun search(name: String?, status: Int?, isDeleted: Boolean?): List<UserRole> {
         return userRoleRepository.findByNameAndStatusAndIsDeleted(name, status, isDeleted)
     }
@@ -38,7 +39,10 @@ class UserRoleServiceImpl(private val userRoleRepository: UserRoleRepository):Us
     override fun findAllActive(): List<UserRole> {
         return userRoleRepository.findAllActive()
     }
+}
 
+@Service
+class UserRoleWriteServiceImpl(private val userRoleRepository: UserRoleRepository) : UserRoleWriteService {
     override fun save(userRole: UserRole): UserRole {
         return userRoleRepository.save(userRole)
     }
@@ -63,5 +67,10 @@ class UserRoleServiceImpl(private val userRoleRepository: UserRoleRepository):Us
     override fun delete(ids: List<Long>) {
         userRoleRepository.deleteByIds(ids)
     }
-
 }
+
+@Service
+class UserRoleServiceImpl(
+    @Qualifier("userRoleReadServiceImpl") private val userRoleReadService: UserRoleReadService,
+    @Qualifier("userRoleWriteServiceImpl") private val userRoleWriteService: UserRoleWriteService
+) : UserRoleService, UserRoleReadService by userRoleReadService, UserRoleWriteService by userRoleWriteService

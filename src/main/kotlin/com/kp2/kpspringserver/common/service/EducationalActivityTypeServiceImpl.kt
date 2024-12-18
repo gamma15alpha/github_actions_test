@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class EducationalActivityTypeServiceImpl(val educationalActivityTypeRepository: EducationalActivityTypeRepository): EducationalActivityTypeService {
-    override fun searchByNameAndIsDeleted(name: String?, isDeleted: Boolean?): List<EducationalActivityType> {
+class EducationalActivityTypeServiceImpl(
+    val educationalActivityTypeRepository: EducationalActivityTypeRepository
+): EducationalActivityTypeService {
+    override fun searchByNameAndIsDeleted(
+        name: String?, isDeleted: Boolean?
+    ): List<EducationalActivityType> {
         return educationalActivityTypeRepository.findByNameAndIsDeleted(name, isDeleted)
     }
 

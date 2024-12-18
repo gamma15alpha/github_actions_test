@@ -15,7 +15,8 @@ data class Work(
     var id: Long? = null,
 
     @Column(nullable = false)
-    @Size(max = WorkConstants.MAX_TITLE_LENGTH, message = "Название не должно превышать ${WorkConstants.MAX_TITLE_LENGTH} символов.")
+    @Size(max = WorkConstants.MAX_TITLE_LENGTH, message = "Название не должно превышать" +
+            " ${WorkConstants.MAX_TITLE_LENGTH} символов.")
     @Pattern(
         regexp = WorkConstants.TITLE_DESCRIPTION_PATTERN,
         message = "Название может содержать только русские и латинские буквы, цифры и специальные символы."
@@ -50,12 +51,14 @@ data class Work(
     @JsonBackReference
     var task: Task? = null
 ) {
-    constructor() : this(null, null, null, null, null, null, null, null, null)
+    constructor() : this(null, null, null, null, null, null,
+        null, null, null)
 }
 
 object WorkConstants {
     const val MAX_TITLE_LENGTH = 1024
     const val MIN_MARK = 1
     const val MAX_MARK = 5
-    const val TITLE_DESCRIPTION_PATTERN = "^[а-яА-ЯёЁa-zA-Z0-9\\s!@#\$%^&*()_+\\-=\\[\\]{};':\",./<>?|]*\$"
+    const val TITLE_DESCRIPTION_PATTERN =
+        "^[а-яА-ЯёЁa-zA-Z0-9\\s!@#\$%^&*()_+\\-=\\[\\]{};':\",./<>?|]*\$"
 }

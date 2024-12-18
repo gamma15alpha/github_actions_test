@@ -27,7 +27,7 @@ class RegisterController(
     fun showRegistrationForm(model: Model): String {
         model.addAttribute("registrationForm", RegistrationForm(
             null, null, null, null, null, null))
-        return "Security/register"
+        return RegisterMessages.REGISTER_VIEW
     }
 
     @PostMapping("/register")
@@ -37,8 +37,11 @@ class RegisterController(
         model: Model
     ): String {
         if (bindingResult.hasErrors()) {
-            return "Security/register"
+            return RegisterMessages.REGISTER_VIEW
         }
+
+        var resultView = RegisterMessages.REGISTER_VIEW  // Изначально возвращаем страницу регистрации
+        var errorMessage: String? = null
 
         try {
             val user = User(
@@ -54,24 +57,27 @@ class RegisterController(
             )
 
             userService.save(user)
-            return "redirect:/registration-success"
+            resultView = "redirect:/registration-success"  // Успех — редирект
         } catch (e: DataIntegrityViolationException) {
             logger.error("Ошибка при регистрации пользователя (нарушение целостности данных): ${e.message}", e)
-            model.addAttribute("error", "Ошибка при регистрации! Попробуйте снова.")
-            return "Security/register"
+            errorMessage = RegisterMessages.REGISTRATION_ERROR
         } catch (e: IllegalArgumentException) {
             logger.error("Ошибка при регистрации пользователя: ${e.message}", e)
-            model.addAttribute("error", "Ошибка при регистрации! Проверьте введенные данные.")
-            return "Security/register"
+            errorMessage = RegisterMessages.INVALID_DATA_ERROR
         } catch (e: Exception) {
             logger.error("Неизвестная ошибка при регистрации: ${e.message}", e)
-            model.addAttribute("error", "Произошла ошибка при регистрации. Попробуйте снова.")
-            return "Security/register"
+            errorMessage = RegisterMessages.UNKNOWN_ERROR
         }
+
+        if (errorMessage != null) {
+            model.addAttribute("error", errorMessage)
+        }
+
+        return resultView
     }
 
     @GetMapping("/registration-success")
     fun showSuccessPage(): String {
-        return "Security/registrationSuccess"
+        return RegisterMessages.REGISTRATION_SUCCESS
     }
 }

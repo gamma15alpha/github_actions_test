@@ -13,7 +13,9 @@ interface UserRoleRepository : JpaRepository<UserRole, Long> {
 
     fun findByNameAndStatusAndIsDeleted(name: String?, status: Int?, isDeleted: Boolean?): List<UserRole>
 
-    fun findByStatusAndIsDeleted(status: Int, isDeleted: Boolean, sort: org.springframework.data.domain.Sort): List<UserRole>
+    fun findByStatusAndIsDeleted(
+        status: Int, isDeleted: Boolean, sort: org.springframework.data.domain.Sort
+    ): List<UserRole>
 
     fun findAllByIsDeleted(isDeleted: Boolean): List<UserRole>
 
