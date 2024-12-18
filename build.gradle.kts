@@ -4,7 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.3.4"
 	id("io.spring.dependency-management") version "1.1.6"
 	kotlin("kapt") version "1.9.0"
-	id("com.github.spotbugs") version "5.0.14"
+	id("io.gitlab.arturbosch.detekt") version "1.23.1"
 }
 
 group = "com.kp2"
@@ -68,6 +68,17 @@ kotlin {
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict")
 	}
+}
+
+detekt {
+	toolVersion = "1.23.1"
+	config = files("detekt-config.yml")
+	buildUponDefaultConfig = true
+	allRules = false
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+	jvmTarget = "17"
 }
 
 //tasks.withType<Jar> {

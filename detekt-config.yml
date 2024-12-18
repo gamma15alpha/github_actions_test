@@ -1,0 +1,12 @@
+detekt:
+  config:
+    validation: true
+
+style:
+  MagicNumber:
+    active: true
+    ignoreNumbers: [-1, 0, 1]
+
+comments:
+  CommentOverPrivateFunction:
+    active: true
