@@ -49,5 +49,4 @@ class EducationalActivityTypeServiceImpl(val educationalActivityTypeRepository: 
     override fun delete(ids: List<Long>) {
         educationalActivityTypeRepository.deleteByIds(ids)
     }
-
 }

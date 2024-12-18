@@ -1,6 +1,5 @@
 package com.kp2.kpspringserver.common.service
 
-import com.kp2.kpspringserver.common.model.User
 import com.kp2.kpspringserver.common.model.WorkStatus
 import org.springframework.transaction.annotation.Transactional
 

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class LecturerSubjectServiceImpl(private val lecturerSubjectRepository: LecturerSubjectRepository) : LecturerSubjectService{
+class LecturerSubjectServiceImpl(
+    private val lecturerSubjectRepository: LecturerSubjectRepository
+) : LecturerSubjectService{
     override fun getBySubject(subject: Subject): List<LecturerSubject> {
         return lecturerSubjectRepository.findBySubject(subject)
     }

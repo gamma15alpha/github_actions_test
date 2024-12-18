@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.sql.Date
 import java.util.*
 
 @SpringBootApplication
@@ -27,64 +26,54 @@ class DataInitializer(
 
 	@Transactional
 	override fun run(vararg args: String?) {
-		if (userRoleService.findByName("ROLE_ADMIN") == null) {
-			userRoleService.save(
-				UserRole(
-					id = null,
-					name = "ROLE_ADMIN",
-					status = 1,
-					isDeleted = false
-			))
-		}
-		if (userRoleService.findByName("ROLE_MODERATOR") == null) {
-			userRoleService.save(
-				UserRole(
-					id = null,
-					name = "ROLE_MODERATOR",
-					status = 2,
-					isDeleted = false
-				))
-		}
-		if (userRoleService.findByName("ROLE_LECTOR") == null) {
-			userRoleService.save(
-				UserRole(
-					id = null,
-					name = "ROLE_LECTOR",
-					status = 3,
-					isDeleted = false
-				))
-		}
-		if (userRoleService.findByName("ROLE_STUDENT") == null) {
-			userRoleService.save(
-				UserRole(
-					id = null,
-					name = "ROLE_STUDENT",
-					status = 4,
-					isDeleted = false
-				))
-		}
-		if (userRoleService.findByName("ROLE_USER") == null) {
-			userRoleService.save(
-				UserRole(
-					id = null,
-					name = "ROLE_USER",
-					status = 5,
-					isDeleted = false
-				))
-		}
+		initializeRoles()
+		initializeDefaultAdminUser()
+	}
 
-		if(userService.findByLogin("defaultAdmin") == null){
-			userService.save(User(
-				login = "defaultAdmin",
-				hashedPassword = "defaultAdmin",
-				name = "defaultAdmin",
-				surname = "defaultAdmin",
-				email = "defaultAdmin@gmail.com",
-				phone = "defaultphone",
-				createdDate = Date(),
-				isActive = true,
-				role = userRoleService.findByName("ROLE_ADMIN")
-			))
+	private fun initializeRoles() {
+		val roles = listOf(
+			"ROLE_ADMIN" to 1,
+			"ROLE_MODERATOR" to 2,
+			"ROLE_LECTOR" to 3,
+			"ROLE_STUDENT" to 4,
+			"ROLE_USER" to 5
+		)
+
+		roles.forEach { (roleName, status) ->
+			if (userRoleService.findByName(roleName) == null) {
+				saveUserRole(roleName, status)
+			}
 		}
+	}
+
+	private fun saveUserRole(roleName: String, status: Int) {
+		userRoleService.save(
+			UserRole(
+				id = null,
+				name = roleName,
+				status = status,
+				isDeleted = false
+			)
+		)
+	}
+
+	private fun initializeDefaultAdminUser() {
+		if (userService.findByLogin("defaultAdmin") == null) {
+			saveDefaultAdminUser()
+		}
+	}
+
+	private fun saveDefaultAdminUser() {
+		userService.save(User(
+			login = "defaultAdmin",
+			hashedPassword = "defaultAdmin",
+			name = "defaultAdmin",
+			surname = "defaultAdmin",
+			email = "defaultAdmin@gmail.com",
+			phone = "defaultphone",
+			createdDate = Date(),
+			isActive = true,
+			role = userRoleService.findByName("ROLE_ADMIN")
+		))
 	}
 }

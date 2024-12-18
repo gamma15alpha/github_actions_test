@@ -1,7 +1,6 @@
 package com.kp2.kpspringserver.common.service
 
 import com.kp2.kpspringserver.common.model.Subject
-import org.springframework.stereotype.Service
 
 interface SubjectService {
     fun searchByNameAndIsDeleted(name: String?, isDeleted: Boolean?): List<Subject>
